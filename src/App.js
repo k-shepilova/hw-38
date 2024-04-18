@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+import {useState} from "react";
+import ToDoList from "./components/ToDoList";
+import NewToDo from "./components/NewToDo";
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default function App() {
+    const [todos, setTodos] = useState([
+        {id: 1, task: 'Todo 1', isDone: false},
+        {id: 2, task: 'Todo 2', isDone: false},
+        {id: 3, task: 'Todo 3', isDone: false},
+        {id: 4, task: 'Todo 4', isDone: false},
+        {id: 5, task: 'Todo 5', isDone: false},
+    ]);
+    const toggleTodo = (id) => {
+        setTodos(
+            todos.map(todo =>
+                todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : todo
+            )
+        );
+    };
 
-export default App;
+    const addTodo = (task) => {
+        const newTodo = {
+            id: todos.length + 1,
+            task,
+            isDone: false
+        };
+        setTodos([...todos, newTodo]);
+    };
+
+    return (
+        <div className="todo-wrapper">
+            <h1>ToDo List</h1>
+            <ToDoList todos={todos} toggleTodo={toggleTodo}/>
+            <NewToDo addTodo={addTodo}/>
+        </div>
+    );
+
+}
